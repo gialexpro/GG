@@ -1,2 +1,2 @@
-#define SECRET_SSID "wifi"
+#define SECRET_SSID "ggwifi"
 #define SECRET_PASS "password"
