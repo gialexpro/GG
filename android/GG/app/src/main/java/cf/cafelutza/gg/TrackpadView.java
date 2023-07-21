@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -27,8 +28,8 @@ public class TrackpadView extends View {
     private float reY = 0;
 
 
-    public TrackpadView(Context c) {
-        super(c);
+    public TrackpadView(Context c, AttributeSet attrs) {
+        super(c,attrs);
 
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
@@ -102,11 +103,14 @@ public class TrackpadView extends View {
             mY = y;
 
 
-            UDP_Client Client = new UDP_Client();
             int frx= (int) rx;
             int fry= (int) ry;
-            Client.Message = "MRX"+frx+"Y"+fry;
-            Client.Send();
+
+//            MainScreen.client.Send("GG:1|MOUS:0|XMUS:"+frx+"|;");
+//
+//            MainScreen.client.Send("GG:1|MOUS:0|YMUS:"+fry+"|;");
+            MainScreen.client.Send("GG:1|MOUS:0|XYMS:"+frx+"|"+fry+"|;");
+            
         }
 
 
@@ -155,10 +159,10 @@ public class TrackpadView extends View {
                 int yDiff = (int) Math.abs(curr.y - start.y);
                 if (xDiff < CLICK && yDiff < CLICK) {
 
-                    UDP_Client Client = new UDP_Client();
-                    Client.Message = "CL";
-                    Client.Send();
+                    MainScreen.client.Send("GG:1|MBTN:1|MBUD:1|;");
 
+                    MainScreen.client.Send("GG:1|MBTN:1|MBUD:0|;");
+                    
                 }
 
                 touch_up();

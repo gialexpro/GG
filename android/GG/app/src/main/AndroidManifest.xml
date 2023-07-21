@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.HIGH_SAMPLING_RATE_SENSORS" />
+    <uses-feature android:name="android.hardware.sensor.gyroscope"/>
 
     <application
         android:allowBackup="true"
@@ -33,9 +35,20 @@
         <activity
             android:name="cf.cafelutza.gg.MainActivity"
             android:exported="true"
-            android:label="@string/title_activity_main">
+            android:label="@string/title_activity_main"/>
+        <activity
+            android:name="cf.cafelutza.gg.TextboxActivity"
+            android:exported="true"
+            android:label="@string/title_activity_textbox"/>
+        <activity
+            android:name="cf.cafelutza.gg.TrackpadActivity"
+            android:exported="true"
+            android:label="@string/title_activity_trackpad"/>
+        <activity
+            android:name="cf.cafelutza.gg.PresentationActivity"
+            android:exported="true"
+            android:label="@string/title_activity_presentation"/>
 
-        </activity>
     </application>
 
 </manifest>

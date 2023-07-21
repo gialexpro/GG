@@ -3,5 +3,7 @@
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_main_screen">GG</string>
-    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_activity_textbox">TextboxActivity</string>
+    <string name="title_activity_trackpad">TrackpadActivity</string>
+    <string name="title_activity_presentation">Presentation</string>
 </resources>

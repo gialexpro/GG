@@ -9,4 +9,11 @@
         <item>reply</item>
         <item>reply_all</item>
     </string-array>
+
+    <string-array name="spinnerItems">
+        <item>Default</item>
+        <item>Trackpad</item>
+        <item>Textbox</item>
+        <item>Presentation</item>
+    </string-array>
 </resources>

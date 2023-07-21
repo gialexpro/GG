@@ -33,6 +33,8 @@ const uint32_t DBTN = 3;
 const uint32_t MOUS = 4;
 const uint32_t MBTN = 5;
 const uint32_t PREF = 6;
+const uint32_t HTKY = 7;
+const uint32_t KYBD = 8;
 
 std::map<String,uint32_t> inputTypes{
     {"BTTN",BTTN},
@@ -40,7 +42,9 @@ std::map<String,uint32_t> inputTypes{
     {"DBTN",DBTN},
     {"MOUS",MOUS},
     {"MBTN",MBTN},
-    {"PREF",PREF}
+    {"PREF",PREF},
+    {"HTKY",HTKY},
+    {"KYBD",KYBD}
 };
 
 const uint32_t BUPD = 1;
@@ -60,6 +64,20 @@ const uint32_t CHNL = 14;
 const uint32_t CONN = 15;
 const uint32_t PORT = 16;
 const uint32_t ATOK = 17;
+const uint32_t HNTR = 18;
+const uint32_t HTAB = 19;
+const uint32_t HSTB = 20;
+const uint32_t HCPL = 21;
+const uint32_t HCMI = 22;
+const uint32_t HCTW = 23;
+const uint32_t HCTT = 24;
+const uint32_t KBMD = 25;
+const uint32_t KBKY = 26;
+const uint32_t KBRA = 27;
+const uint32_t XYMS = 28;
+const uint32_t XYJY = 29;
+const uint32_t KBKS = 30;
+const uint32_t HBKS = 31;
 
 
 std::map<String,uint32_t> inputKeys{
@@ -79,7 +97,21 @@ std::map<String,uint32_t> inputKeys{
     {"CHNL",CHNL},
     {"CONN",CONN},
     {"PORT",PORT},
-    {"ATOK",ATOK}
+    {"ATOK",ATOK},
+    {"HNTR",HNTR},
+    {"HTAB",HTAB},
+    {"HSTB",HSTB},
+    {"HCPL",HCPL},
+    {"HCMI",HCMI},
+    {"HCTW",HCTW},
+    {"HCTT",HCTT},
+    {"KBMD",KBMD},
+    {"KBKY",KBKY},
+    {"KBRA",KBRA},
+    {"XYMS",XYMS},
+    {"XYJY",XYJY},
+    {"KBKS",KBKS},
+    {"HBKS",HBKS}
 };
 
 std::map<uint32_t,uint32_t> inputIDType{
@@ -99,7 +131,21 @@ std::map<uint32_t,uint32_t> inputIDType{
     {CHNL,PREF},
     {CONN,PREF},
     {PORT,PREF},
-    {ATOK,PREF}
+    {ATOK,PREF},
+    {HNTR,HTKY},
+    {HTAB,HTKY},
+    {HSTB,HTKY},
+    {HCMI,HTKY},
+    {HCPL,HTKY},
+    {HCTW,HTKY},
+    {HCTT,HTKY},
+    {KBMD,KYBD},
+    {KBKY,KYBD},
+    {KBRA,KYBD},
+    {XYMS,MOUS},
+    {XYJY,JSTK},
+    {KBKS,KYBD},
+    {HBKS,HTKY}
 };
 
 
@@ -216,6 +262,22 @@ bool handleYJOY(uint8_t &yvalue, uint8_t &playerID, uint32_t &inputID) {
     return true; //no err
 }
 
+bool handleXYJY(uint8_t &yvalue, uint8_t &xvalue, uint8_t &playerID, uint32_t &inputID) {
+    switch (inputID) {
+        case 1: //left
+            Gamepad.leftStick(xvalue, yvalue);
+            oldxvaluel=xvalue;
+            oldyvaluel=yvalue;
+            break;
+        case 2: //right
+            Gamepad.rightStick(xvalue, yvalue);
+            oldxvaluer=xvalue;
+            oldyvaluer=yvalue;
+            break;
+    }
+    return true; //no err
+}
+
 bool parseJSTK(String &cmd, uint8_t &playerID) {
     if(cmd.length()<=9) {
         Serial.print("inputID not detected");
@@ -274,6 +336,24 @@ bool parseJSTK(String &cmd, uint8_t &playerID) {
             }
             uint8_t yvalue = uint8_t(cmd.substring(inputID_end+1+4+1,yvalue_end).toInt());
             return handleYJOY(yvalue, playerID, inputID);
+        } break;
+        case XYJY:
+        {
+            int xvalue_end=cmd.indexOf('|',inputID_end+1+4);
+            if(xvalue_end==-1) {
+                Serial.print("Error getting xvalue");
+                Serial.println();
+                return false;
+            }
+            uint8_t xvalue = uint8_t(cmd.substring(inputID_end+1+4+1,xvalue_end).toInt());
+            int yvalue_end=cmd.indexOf('|',xvalue_end+1);
+            if(yvalue_end==-1) {
+                Serial.print("Error getting yvalue");
+                Serial.println();
+                return false;
+            }
+            uint8_t yvalue = uint8_t(cmd.substring(xvalue_end+1,yvalue_end).toInt());
+            return handleXYJY(xvalue, yvalue, playerID, inputID);
         } break;
         default:
             Serial.print("Invalid key for input type ");
@@ -448,6 +528,13 @@ bool handleYMUS(uint8_t &yvalue, uint8_t &playerID, uint32_t &inputID) {
     return true; //no err
 }
 
+bool handleXYMS(uint8_t &xvalue, uint8_t &yvalue, uint8_t &playerID, uint32_t &inputID) {
+    Mouse.move(xvalue, yvalue);
+    Serial.println(xvalue);
+    Serial.println(yvalue);
+    return true; //no err
+}
+
 bool parseMOUS(String &cmd, uint8_t &playerID) {
     if(cmd.length()<=9) {
         Serial.print("inputID not detected");
@@ -506,6 +593,24 @@ bool parseMOUS(String &cmd, uint8_t &playerID) {
             }
             uint8_t yvalue = uint8_t(cmd.substring(inputID_end+1+4+1,yvalue_end).toInt());
             return handleYMUS(yvalue, playerID, inputID);
+        } break;
+        case XYMS:
+        {
+            int xvalue_end=cmd.indexOf('|',inputID_end+1+4);
+            if(xvalue_end==-1) {
+                Serial.print("Error getting xvalue");
+                Serial.println();
+                return false;
+            }
+            uint8_t xvalue = uint8_t(cmd.substring(inputID_end+1+4+1,xvalue_end).toInt());
+            int yvalue_end=cmd.indexOf('|',xvalue_end+1);
+            if(yvalue_end==-1) {
+                Serial.print("Error getting yvalue");
+                Serial.println();
+                return false;
+            }
+            uint8_t yvalue = uint8_t(cmd.substring(xvalue_end+1,yvalue_end).toInt());
+            return handleXYMS(xvalue, yvalue, playerID, inputID);
         } break;
         default:
             Serial.print("Invalid key for input type ");
@@ -855,6 +960,264 @@ bool parsePREF(String &cmd, uint8_t &playerID) {
     return true; //no err
 }
 
+
+
+
+
+bool parseHTKY(String &cmd, uint8_t &playerID) {
+    if(cmd.length()<=9) {
+        Serial.print("inputID not detected");
+        Serial.println();
+        return false;
+    }
+    int inputID_end=cmd.indexOf('|',9);
+    if(inputID_end==-1) {
+        Serial.print("Error getting inputID");
+        Serial.println();
+        return false;
+    }
+    uint32_t inputID=uint32_t(cmd.substring(10,inputID_end).toInt());
+    if(!cansubstring(cmd, inputID_end+1, inputID_end+1+4)) {
+        Serial.print("key not detected");
+        Serial.println();
+        return false;
+    }
+    String key = cmd.substring(inputID_end+1,inputID_end+1+4);
+    auto key_it = inputKeys.find(key);
+    if(key_it == inputKeys.end()) {
+        Serial.print("Invalid key for input type ");
+        Serial.print("HTKY");
+        Serial.println(": ");
+        Serial.println(key);
+        Serial.print("Valid keys for input type ");
+        Serial.print("HTKY");
+        Serial.println(": ");
+        for(auto &el:inputKeys) {
+            if(inputIDType[el.second]==inputTypes["HTKY"]) {
+                Serial.println(el.first);
+            }
+        }
+        Serial.println();
+        return false;
+    }
+    switch(key_it->second) {
+        case HNTR:
+        {
+            Keyboard.write(KEY_RETURN);
+            return true;
+        } break;
+        case HTAB:
+        {
+            Keyboard.write(KEY_TAB);
+            return true;
+        } break;
+        case HSTB:
+        {
+            Keyboard.press(KEY_LEFT_SHIFT);
+            Keyboard.press(KEY_TAB);
+            Keyboard.releaseAll();
+            return true;
+        } break;
+        case HCMI:
+        {
+            Keyboard.press(KEY_LEFT_CTRL);
+            Keyboard.press('-');
+            Keyboard.releaseAll();
+            return true;
+        } break;
+        case HCPL:
+        {
+            Keyboard.press(KEY_LEFT_CTRL);
+            Keyboard.press('+');
+            Keyboard.releaseAll();
+            return true;
+        } break;
+        case HCTT:
+        {
+            Keyboard.press(KEY_LEFT_CTRL);
+            Keyboard.press('t');
+            Keyboard.releaseAll();
+            return true;
+        } break;
+        case HCTW:
+        {
+            Keyboard.press(KEY_LEFT_CTRL);
+            Keyboard.press('w');
+            Keyboard.releaseAll();
+            return true;
+        } break;
+        case HBKS:
+        {
+            Keyboard.write(KEY_BACKSPACE);
+            return true;
+        } break;
+        default:
+        {
+            Serial.print("Invalid key for input type ");
+            Serial.print("HTKY");
+            Serial.println(": ");
+            Serial.println(key);
+            Serial.print("Valid keys for input type ");
+            Serial.print("HTKY");
+            Serial.println(": ");
+            for(auto &el:inputKeys) {
+                if(inputIDType[el.second]==inputTypes["HTKY"]) {
+                    Serial.println(el.first);
+                }
+            }
+            Serial.println();
+            return false;
+        } break;
+    }
+    return true; //no err
+}
+
+
+
+void uint8_t_to_bools(uint8_t x, bool &_0, bool &_1, bool &_2, bool &_3, bool &_4, bool &_5, bool &_6, bool &_7) {
+    _0=x&1; x>>=1;
+    _1=x&1; x>>=1;
+    _2=x&1; x>>=1;
+    _3=x&1; x>>=1;
+    _4=x&1; x>>=1;
+    _5=x&1; x>>=1;
+    _6=x&1; x>>=1;
+    _7=x&1; x>>=1;
+}
+
+bool handleKBMD(uint8_t &mods, uint8_t &playerID, uint32_t &inputID) {
+    bool lctrl=false;
+    bool lshift=false;
+    bool lalt=false;
+    bool lgui=false;
+    bool rctrl=false;
+    bool rshift=false;
+    bool ralt=false;
+    bool rgui=false;
+    uint8_t_to_bools(mods, lctrl, lshift, lalt, lgui, rctrl, rshift, ralt, rgui);
+    if(lctrl)   { Keyboard.press(KEY_LEFT_CTRL);   }
+    if(lshift)  { Keyboard.press(KEY_LEFT_SHIFT);  }
+    if(lalt)    { Keyboard.press(KEY_LEFT_ALT);    }
+    if(lgui)    { Keyboard.press(KEY_LEFT_GUI);    }
+    if(rctrl)   { Keyboard.press(KEY_RIGHT_CTRL);  }
+    if(rshift)  { Keyboard.press(KEY_RIGHT_SHIFT); }
+    if(ralt)    { Keyboard.press(KEY_RIGHT_ALT);   }
+    if(rgui)    { Keyboard.press(KEY_RIGHT_GUI);   }
+    return true; //no err
+}
+
+bool handleKBKY(char &key, uint8_t &playerID, uint32_t &inputID) {
+    Keyboard.write(key);
+    return true; //no err
+}
+
+bool handleKBKS(String &keys, uint8_t &playerID, uint32_t &inputID) {
+    if(keys.length()!=inputID) {
+        Serial.println("\""+keys+"\".length()!="+inputID);
+        return false;
+    }
+    Keyboard.print(keys);
+    return true; //no err
+}
+
+bool parseKYBD(String &cmd, uint8_t &playerID) {
+    if(cmd.length()<=9) {
+        Serial.print("inputID not detected");
+        Serial.println();
+        return false;
+    }
+    int inputID_end=cmd.indexOf('|',9);
+    if(inputID_end==-1) {
+        Serial.print("Error getting inputID");
+        Serial.println();
+        return false;
+    }
+    uint32_t inputID=uint32_t(cmd.substring(10,inputID_end).toInt());
+    if(!cansubstring(cmd, inputID_end+1, inputID_end+1+4)) {
+        Serial.print("key not detected");
+        Serial.println();
+        return false;
+    }
+    String key = cmd.substring(inputID_end+1,inputID_end+1+4);
+    auto key_it = inputKeys.find(key);
+    if(key_it == inputKeys.end()) {
+        Serial.print("Invalid key for input type ");
+        Serial.print("KYBD");
+        Serial.println(": ");
+        Serial.println(key);
+        Serial.print("Valid keys for input type ");
+        Serial.print("KYBD");
+        Serial.println(": ");
+        for(auto &el:inputKeys) {
+            if(inputIDType[el.second]==inputTypes["KYBD"]) {
+                Serial.println(el.first);
+            }
+        }
+        Serial.println();
+        return false;
+    }
+    switch(key_it->second) {
+        case KBMD:
+        {
+            int mods_end=cmd.indexOf('|',inputID_end+1+4);
+            if(mods_end==-1) {
+                Serial.print("Error getting mods");
+                Serial.println();
+                return false;
+            }
+            uint8_t mods = uint8_t(cmd.substring(inputID_end+1+4+1,mods_end).toInt());
+            return handleKBMD(mods, playerID, inputID);
+        } break;
+        case KBKY:
+        {
+            if(cmd.length()<=inputID_end+1+4+1) {
+              Serial.print("key not detected");
+              Serial.println();
+              return false;
+            }
+            char key=cmd[inputID_end+1+4+1];
+            return handleKBKY(key, playerID, inputID);
+        } break;
+        case KBRA:
+        {
+            Keyboard.releaseAll();
+        } break;
+        case KBKS:
+        {
+            int keys_end=cmd.lastIndexOf('|');
+            if(keys_end==-1) {
+                Serial.print("Error getting keys");
+                Serial.println();
+                return false;
+            }
+            String keys = cmd.substring(inputID_end+1+4+1,keys_end);
+            return handleKBKS(keys, playerID, inputID);
+        } break;
+        default:
+        {
+            Serial.print("Invalid key for input type ");
+            Serial.print("KYBD");
+            Serial.println(": ");
+            Serial.println(key);
+            Serial.print("Valid keys for input type ");
+            Serial.print("KYBD");
+            Serial.println(": ");
+            for(auto &el:inputKeys) {
+                if(inputIDType[el.second]==inputTypes["KYBD"]) {
+                    Serial.println(el.first);
+                }
+            }
+            Serial.println();
+            return false;
+        } break;
+    }
+    return true; //no err
+}
+
+
+
+
+
 void parseinit(String &cmd) {
     if(cmd.length()<20) {
         Serial.print("Invalid command length: ");
@@ -915,6 +1278,12 @@ void parseinit(String &cmd) {
             if(parsePREF(cmd, playerID)) {
                 ESP.restart();
             }
+            break;
+        case HTKY:
+            parseHTKY(cmd, playerID);
+            break;
+        case KYBD:
+            parseKYBD(cmd, playerID);
             break;
     }
     return;

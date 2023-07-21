@@ -48,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
         l2b=findViewById(R.id.l2b);
         r2b=findViewById(R.id.r2b);
 
+
+        UDP_Client client = MainScreen.client;
+
         //frameLayout=findViewById(R.id.framelayout);
 
         //frameLayout.addView(new TrackpadView(getBaseContext()));
@@ -55,76 +58,65 @@ public class MainActivity extends AppCompatActivity {
         leftb.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                UDP_Client Client = new UDP_Client();
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        Client.Message = "GG:1|BTTN:4|BUPD:1|;";
-                        break;
+                        client.Send("GG:1|BTTN:4|BUPD:1|;");
+                        return true;
                     case MotionEvent.ACTION_UP:
-                        Client.Message = "GG:1|BTTN:4|BUPD:0|;";
+                        client.Send("GG:1|BTTN:4|BUPD:0|;");
+                        return true;
+                    default:
+                        return false;
                 }
-                if(Client.Message!=null) {
-                    Client.Send();
-                    return true;
-                }
-                return false;
+
             }
         });
 
         rightb.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                UDP_Client Client = new UDP_Client();
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        Client.Message = "GG:1|BTTN:1|BUPD:1|;";
-                        break;
+                        client.Send("GG:1|BTTN:1|BUPD:1|;");
+                        return true;
                     case MotionEvent.ACTION_UP:
-                        Client.Message = "GG:1|BTTN:1|BUPD:0|;";
+                        client.Send("GG:1|BTTN:1|BUPD:0|;");
+                        return true;
+                    default:
+                        return false;
                 }
-                if(Client.Message!=null) {
-                    Client.Send();
-                    return true;
-                }
-                return false;
             }
         });
 
         upb.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                UDP_Client Client = new UDP_Client();
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        Client.Message = "GG:1|BTTN:3|BUPD:1|;";
-                        break;
+                        client.Send ("GG:1|BTTN:3|BUPD:1|;");
+                        return true;
                     case MotionEvent.ACTION_UP:
-                        Client.Message = "GG:1|BTTN:3|BUPD:0|;";
+                        client.Send ("GG:1|BTTN:3|BUPD:0|;");
+                        return true;
+                    default:
+                        return false;
                 }
-                if(Client.Message!=null) {
-                    Client.Send();
-                    return true;
-                }
-                return false;
             }
         });
 
         downb.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                UDP_Client Client = new UDP_Client();
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        Client.Message = "GG:1|BTTN:0|BUPD:1|;";
-                        break;
+                        client.Send ("GG:1|BTTN:0|BUPD:1|;");
+                        return true;
                     case MotionEvent.ACTION_UP:
-                        Client.Message = "GG:1|BTTN:0|BUPD:0|;";
+                        client.Send ( "GG:1|BTTN:0|BUPD:0|;");
+                        return true;
+                    default:
+                        return false;
                 }
-                if(Client.Message!=null) {
-                    Client.Send();
-                    return true;
-                }
-                return false;
             }
         });
 
@@ -138,83 +130,67 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
-
-
         leftb2.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                UDP_Client Client = new UDP_Client();
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        Client.Message = "GG:1|DBTN:7|DBUD:1|;";
-                        break;
+                        client.Send ( "GG:1|DBTN:7|DBUD:1|;");
+                        return true;
                     case MotionEvent.ACTION_UP:
-                        Client.Message = "GG:1|DBTN:7|DBUD:0|;";
+                        client.Send ( "GG:1|DBTN:7|DBUD:0|;");
+                        return true;
+                    default:
+                        return false;
                 }
-                if(Client.Message!=null) {
-                    Client.Send();
-                    return true;
-                }
-                return false;
             }
         });
 
         rightb2.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                UDP_Client Client = new UDP_Client();
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        Client.Message = "GG:1|DBTN:3|DBUD:1|;";
-                        break;
+                        client.Send  ("GG:1|DBTN:3|DBUD:1|;");
+                        return true;
                     case MotionEvent.ACTION_UP:
-                        Client.Message = "GG:1|DBTN:3|DBUD:0|;";
+                        client.Send  ("GG:1|DBTN:3|DBUD:0|;");
+                        return true;
+                    default:
+                        return false;
                 }
-                if(Client.Message!=null) {
-                    Client.Send();
-                    return true;
-                }
-                return false;
             }
         });
 
         upb2.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                UDP_Client Client = new UDP_Client();
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        Client.Message = "GG:1|DBTN:1|DBUD:1|;";
-                        break;
+                        client.Send ( "GG:1|DBTN:1|DBUD:1|;");
+                        return true;
                     case MotionEvent.ACTION_UP:
-                        Client.Message = "GG:1|DBTN:1|DBUD:0|;";
+                        client.Send ( "GG:1|DBTN:1|DBUD:0|;");
+                        return true;
+                    default:
+                        return false;
                 }
-                if(Client.Message!=null) {
-                    Client.Send();
-                    return true;
-                }
-                return false;
             }
         });
 
         downb2.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                UDP_Client Client = new UDP_Client();
-                switch(event.getAction()) {
+                switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        Client.Message = "GG:1|DBTN:5|DBUD:1|;";
-                        break;
+                        client.Send("GG:1|DBTN:5|DBUD:1|;");
+                        return true;
                     case MotionEvent.ACTION_UP:
-                        Client.Message = "GG:1|DBTN:5|DBUD:0|;";
+                        client.Send("GG:1|DBTN:5|DBUD:0|;");
+                        return true;
+                    default:
+                        return false;
                 }
-                if(Client.Message!=null) {
-                    Client.Send();
-                    return true;
-                }
-                return false;
             }
         });
 
@@ -240,76 +216,67 @@ public class MainActivity extends AppCompatActivity {
         l1b.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                UDP_Client Client = new UDP_Client();
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        Client.Message = "GG:1|BTTN:6|BUPD:1|;";
-                        break;
+                        client.Send ( "GG:1|BTTN:6|BUPD:1|;");
+                        return true;
                     case MotionEvent.ACTION_UP:
-                        Client.Message = "GG:1|BTTN:6|BUPD:0|;";
+                        client.Send ( "GG:1|BTTN:6|BUPD:0|;");
+                        return true;
+                    default:
+                        return false;
                 }
-                if(Client.Message!=null) {
-                    Client.Send();
-                    return true;
-                }
-                return false;
             }
         });
 
         r1b.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                UDP_Client Client = new UDP_Client();
+
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        Client.Message = "GG:1|BTTN:7|BUPD:1|;";
-                        break;
+                        client.Send  ("GG:1|BTTN:7|BUPD:1|;");
+                        return true;
                     case MotionEvent.ACTION_UP:
-                        Client.Message = "GG:1|BTTN:7|BUPD:0|;";
+                        client.Send ( "GG:1|BTTN:7|BUPD:0|;");
+                        return true;
+                    default:
+                        return false;
                 }
-                if(Client.Message!=null) {
-                    Client.Send();
-                    return true;
-                }
-                return false;
             }
         });
 
         l2b.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                UDP_Client Client = new UDP_Client();
+
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        Client.Message = "GG:1|BTTN:8|BUPD:1|;";
-                        break;
+                        client.Send ("GG:1|BTTN:8|BUPD:1|;");
+                        return true;
                     case MotionEvent.ACTION_UP:
-                        Client.Message = "GG:1|BTTN:8|BUPD:0|;";
+                        client.Send ( "GG:1|BTTN:8|BUPD:0|;");
+                        return true;
+                    default:
+                        return false;
                 }
-                if(Client.Message!=null) {
-                    Client.Send();
-                    return true;
-                }
-                return false;
             }
         });
 
         r2b.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                UDP_Client Client = new UDP_Client();
+
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        Client.Message = "GG:1|BTTN:9|BUPD:1|;";
-                        break;
+                        client.Send ("GG:1|BTTN:9|BUPD:1|;");
+                        return true;
                     case MotionEvent.ACTION_UP:
-                        Client.Message = "GG:1|BTTN:9|BUPD:0|;";
+                        client.Send ( "GG:1|BTTN:9|BUPD:0|;");
+                        return true;
+                    default:
+                        return false;
                 }
-                if(Client.Message!=null) {
-                    Client.Send();
-                    return true;
-                }
-                return false;
             }
         });
 
@@ -317,41 +284,36 @@ public class MainActivity extends AppCompatActivity {
         select.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                UDP_Client Client = new UDP_Client();
+
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        Client.Message = "GG:1|BTTN:10|BUPD:1|;";
-                        break;
+                        client.Send ( "GG:1|BTTN:10|BUPD:1|;");
+                        return true;
                     case MotionEvent.ACTION_UP:
-                        Client.Message = "GG:1|BTTN:10|BUPD:0|;";
+                        client.Send ( "GG:1|BTTN:10|BUPD:0|;");
+                        return true;
+                    default:
+                        return false;
                 }
-                if(Client.Message!=null) {
-                    Client.Send();
-                    return true;
-                }
-                return false;
             }
         });
 
         start.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                UDP_Client Client = new UDP_Client();
+
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        Client.Message = "GG:1|BTTN:11|BUPD:1|;";
-                        break;
+                        client.Send ("GG:1|BTTN:11|BUPD:1|;");
+                        return true;
                     case MotionEvent.ACTION_UP:
-                        Client.Message = "GG:1|BTTN:11|BUPD:0|;";
+                        client.Send ("GG:1|BTTN:11|BUPD:0|;");
+                        return true;
+                    default:
+                        return false;
                 }
-                if(Client.Message!=null) {
-                    Client.Send();
-                    return true;
-                }
-                return false;
             }
         });
-
 
     }
 }
